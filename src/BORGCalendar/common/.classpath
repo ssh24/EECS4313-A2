@@ -6,11 +6,22 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	<classpathentry kind="src" path="test"/>
+=======
+	<classpathentry kind="src" path="eecs4313a2b"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="tests"/>
+>>>>>>> 85b4f85... testfolder
+>>>>>>> 0f65e01... Complete WhiteBox Testing
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
