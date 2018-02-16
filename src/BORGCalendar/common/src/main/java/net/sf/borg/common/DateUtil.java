@@ -101,6 +101,8 @@ public class DateUtil {
 		
 		int hours = mins / 60;
 		int minsPast = mins % 60;
+		System.out.println("hrs:" + hours);
+		System.out.println("min:" + minsPast);
 		
 		String minutesString;
 		String hoursString;
@@ -119,7 +121,7 @@ public class DateUtil {
 			minutesString = minsPast + " " + Resource.getResourceString("Minute");
 		} else if (hours >= 1) {
 			minutesString = "";
-		} else {
+		} else {			
 			minutesString = minsPast + " " + Resource.getResourceString("Minutes");
 		}
 
