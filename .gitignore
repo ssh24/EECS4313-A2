@@ -259,4 +259,7 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+<<<<<<< HEAD
 /.recommenders/
+=======
+>>>>>>> b8f7816... Initialize test structure
