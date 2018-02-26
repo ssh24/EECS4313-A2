@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project name="borg-calendar-installer" default="main" basedir=".">
+
+
+	<target name="init">
+		<tstamp />
+	</target>
+
+	<target name="copy">
+
+		<mkdir dir="target/installer" />
+		<mkdir dir="target/installer/lib" />
+		<mkdir dir="target/installer/licenses" />
+		<mkdir dir="target/installer/lib/ext" />
+		<copy file="src/main/resources/lib/ext/README.txt" todir="target/installer/lib/ext" />
+		<copy file="../swingui/src/main/resources/resource/RELEASE_NOTES.txt" todir="target/installer" />
+		<copy file="../swingui/src/main/resources/resource/borglicense.txt" todir="target/installer" />
+		<copy file="../swingui/src/main/resources/resource/COPYING" todir="target/installer" />
+		<copy file="../swingui/src/main/resources/resource/borg.jpg" todir="target/installer" />
+
+		<copy todir="target/installer/lib">
+			<fileset dir="../swingui/target/lib" includes="*" />
+		</copy>
+		<copy todir="target/installer/licenses">
+			<fileset dir="src/main/resources/licenses" includes="*" />
+		</copy>
+		
+		<copy file="../swingui/target/swingui-${project.version}.jar" tofile="target/installer/borg.jar" />
+		<copy file="../swingui/target/borg.exe" tofile="target/installer/borg.exe" />
+
+	</target>
+
+	<target name="borg_zip">
+		<zip destfile="target/borg.zip">
+			<fileset dir="target/installer" />
+		</zip>
+	</target>
+
+	<target name="main" depends="init,copy,borg_zip" />
+
+
+</project>
