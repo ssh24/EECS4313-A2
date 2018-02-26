@@ -1,3 +1,0 @@
-borg.version=${project.version}
-build.time=${timestamp}
-build.number=${buildNumber}
