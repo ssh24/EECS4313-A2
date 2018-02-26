@@ -1,0 +1,81 @@
+% !TEX encoding = UTF-8
+%Koma article
+\documentclass[fontsize=12pt,paper=letter,twoside]{scrartcl}
+\usepackage{float}
+\usepackage{listings}
+
+%Standard Pre-amble
+\input{sty/defns.tex}
+%Useful definitions
+%\newcommand{\mv}[1]{\textit{m\_#1}}
+%\newcommand{\cv}[1]{\textit{c\_#1}}
+%\newcommand{\degree}[1]{^{\circ}\mathrm{#1}}
+%\newcommand{\comment}[1]{{\footnotesize \quad\texttt{--}\textrm{#1}}}
+
+% Set the header
+\ihead[]{\small EECS4313 Assignment-2}
+
+
+%%%%%%%%%%%%Enter your names here%%%%%%%%
+\author{Student Name | Student Number | EECS Account
+\and \textbf{Edward Vaisman | 212849857 | eddyv}
+\and \textbf{Robin Bandzar | 212200531 | cse23028}
+\and \textbf{Kirusanth Thiruchelvam | 212918298 | kirusant}
+\and \textbf{Sadman Sakib Hasan | 212497509 | cse23152}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\date{\today} % Display a given date or no date
+
+\begin{document}
+\title{EECS 4313 Assignment 2 \\Black-box and White-box Testing with JUnit}
+\maketitle
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+
+
+\newpage
+
+
+%%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
+
+\section{Black Box Testing}
+
+\begin{itemize}
+\item Specification of the selected Java methods.
+\item Justification of the testing technique chosen, i.e., why is it appropriate for this method.
+\item Description of your application of the three testing strategies. Be clear about which test cases
+you implemented.
+\item Evaluation of the test cases derived by the testing technique. Include the screenshots of the
+test running results. If you had to complement the derived test cases with special value 
+testing, describe that as well. The marker will not read your code in order to see what you
+tested. You have to describe it.
+\item Attaching bug reports if bugs are discovered using your testing methods. You should use the
+same bug report format as in Assignment 1. Do not file these bug reports to the project’s bug
+report system. 
+\end{itemize}
+
+\newpage
+\section{White Box Testing}
+
+\begin{itemize}
+\item The statement coverage measurements for your Assignment 2 test suite.
+\item A description of the test cases that you added in this assignment to improve statement
+coverage. The marker will not read your code in order to see what you tested. You have to
+describe it.
+\item The statement coverage measurements for your final submission. Include the screenshots of
+the test running results and the screenshots of the coverage measurement. If your coverage is
+not 100%, include a discussion on why that is.
+\item The Control Flow Graph you created. Indicate the segments clearly (you will probably need
+to include the code for this).
+\item The path coverage discussion described in section 2 above.
+\item Attaching bug reports if bugs are discovered using your testing methods. You should use the
+same bug report format as in Assignment 1. Do not file these bug reports to the project’s bug
+report system.
+\item An appendix with the specification of the methods you are testing (if there are new ones). 
+\end{itemize}
+
+\end{document}
