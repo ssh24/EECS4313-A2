@@ -60,7 +60,7 @@ This method sends a given message to a given host, port and returns the response
 \item[IllegalArgumentException:] If the port parameter is outside the specified range of valid port values, which is between 0 and 65535, inclusive.
 \item[IOException:] If an I/O error occurs when sending the message.
 \end{description}
-\item \textbf{Justification}: Boundary value testing is best suited for methods that have inputs that could be seperated into partitions. For this method the port could be partitioned. We have our valid partition which is between 0 and 65535 (inclusive) and our invalid partitions which is any  port\textless  -1 or any port\textgreater 65535.
+\item \textbf{Justification}: Boundary value testing is best suited for methods that have inputs that could be seperated into partitions. For this method the port could be partitioned. We have our valid partition which is between 0 and 65535 (inclusive) and our invalid partitions which is any  port\textless 0 or any port\textgreater 65535.
 \newpage
 \begin{code}	@Test
 	public void test_sendMsg() {
