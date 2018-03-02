@@ -31,7 +31,6 @@ public class EECS4313A2AllWhiteBoxTests {
 	assertEquals("1 Minute",DateUtil.minuteString(1));
 	//Class 9: Minute/60 = 0 and Minute%60 > 0 (valid input) -- Testing minutes that are less than 1 hour : (0 -59 minutes)
 	assertEquals("50 Minutes",DateUtil.minuteString(50));
-	System.out.println(DateUtil.minuteString(1440));
 	}
 	
 }
