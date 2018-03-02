@@ -13,6 +13,32 @@
 %\newcommand{\degree}[1]{^{\circ}\mathrm{#1}}
 %\newcommand{\comment}[1]{{\footnotesize \quad\texttt{--}\textrm{#1}}}
 
+
+%For Code Stylings
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
 % Set the header
 \ihead[]{\small EECS4313 Assignment-2}
 
@@ -56,18 +82,77 @@ This method sends a given message to a given host, port and returns the response
 \item the third argument \emph{msg} is the message that should be sent over the host and port given.
 \end{itemize}
 \begin{description}
-\item[UnknownHostException:] If the IP address of the host could not be determined.
-\item[IllegalArgumentException:] If the port parameter is outside the specified range of valid port values, which is between 0 and 65535, inclusive.
 \item[IOException:] If an I/O error occurs when sending the message.
 \end{description}
-\item \textbf{Justification}: Boundary value testing is best suited for methods that have inputs that could be seperated into partitions. For this method the port could be partitioned. We have our valid partition which is between 0 and 65535 (inclusive) and our invalid partitions which is any  port\textless 0 or any port\textgreater 65535.
+\item \textbf{Justification}: Boundary value testing is best suited for methods that have inputs that could be seperated into partitions. For this method the port could be partitioned. We have our valid partition which is between 0 and 65535 (inclusive) and our invalid partitions which is any port\textless 0 or any port\textgreater 65535. The msg could be anything and the host could be partitioned into valid/invalid hostnames.
+\item \textbf{Evaluation}: The test below applies weak robust testing on the method \emph{sendMsg} which reveals a bug within the method that causes the method to throw an \\ \mbox{IllegalArgumentException} If the port parameter is outside the specified range of valid port values, which is between 0 and 65535, inclusive. Refer to Figure.~\ref{fig:bbt_bvt1}, Figure.~\ref{fig:bbt_bvt2} and Listing ~\ref{list:weak_robust}\\ \\
+The test is designed to not fail on any  \mbox{IOExceptions} that may occur such as \mbox{UnknownHostException} or \mbox{ConnectionException} since the method is supposed to \emph{throw} an \mbox{IOException}. \\ \\
+However, applying weak normal testing will cause all the tests to pass. Refer to Figure,~\ref{fig:bbt_bvt3} and Listing.~\ref{list:weak_normal}
 \newpage
-\begin{code}	@Test
+\begin{lstlisting}[caption={Weak Robust Testing Variables},label={list:weak_robust}]
+String validHost = "localhost";
+port_norm = 2929; // x_norm
+port_min = 0; // x_min
+port_min_plus = 1; // x_min+
+port_max = 65535; // x_max
+port_max_minus = 65534; // x_max-
+// robustness
+String invalidHost = "asdfasdf"; //unknownhostexception
+int port_min_minus = -1; // x_min-
+int port_max_plus = 65536; // x_max_+
+
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Weak Normal Testing Variables},label={list:weak_normal}]
+String validHost = "localhost";
+port_norm = 2929; // x_norm
+port_min = 0; // x_min
+port_min_plus = 1; // x_min+
+port_max = 65535; // x_max
+port_max_minus = 65534; // x_max-
+\label{list:weak_normal}
+\end{lstlisting}
+\newpage
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/bbt/bvt-fail-1.png}
+\end{center}
+\caption{Test results using Weak Robust Boundary Value Testing}
+\label{fig:bbt_bvt1}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/bbt/bvt-fail-2.png}
+\end{center}
+\caption{Test results using Weak Robust Boundary Value Testing}
+\label{fig:bbt_bvt2}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/bbt/bvt-pass.png}
+\end{center}
+\caption{Test results using Weak Normal Boundary Value Testing}
+\label{fig:bbt_bvt3}
+\end{figure}
+
+\newpage
+\begin{lstlisting}
+public class EECS4313A2AllBlackBoxTests implements SocketHandler {
+
+	/**
+	 * process a socket message
+	 */
+	@Override
+	public synchronized String processMessage(String msg) {
+		return msg;
+	}
+
+	@Test
 	public void test_sendMsg() {
 		/** Method used: Boundary Value Testing **/
 		String validHost = "localhost";
-		String invalidHost = "asdfasdf";
-		String msg = "Port 2929";
 
 		int port_norm = 2929; // x_norm
 		int port_min = 0; // x_min
@@ -76,46 +161,110 @@ This method sends a given message to a given host, port and returns the response
 		int port_max_minus = 65534; // x_max-
 
 		// robustness
+		String invalidHost = "asdfasdf";
 		int port_min_minus = -1; // x_min-
 		int port_max_plus = 65536; // x_max_+
 
+		String response = "";
 		// port_norm
-		String response = SocketClient.sendMsg(invalidHost, port_norm, msg);
-		response = SocketClient.sendMsg(validHost, port_norm, msg);
+		String msg = "Port 2929";
+		SocketServer ss = new SocketServer(port_norm, this);
+		try {
+			response = SocketClient.sendMsg(validHost, port_norm, msg);
+			assertTrue("Testing if a localhost on port_norm sends a message", response.equals(msg));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		/* Unknown host exception extends IOException */
+		try {
+			response = SocketClient.sendMsg(invalidHost, port_norm, msg);
+			assertTrue("Testing if an invalid host on port_norm sends a message", response.equals(msg));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		// port_min
+		/*
+		 * Throws connection problem. port 0 isn't available on my computer Connect
+		 * Exception extends Socket Exception which extends IOException
+		 */
 		msg = "Port 0";
-		response = SocketClient.sendMsg(invalidHost, port_min, msg);
-		response = SocketClient.sendMsg(validHost, port_min, msg);
-
+		try {
+			ss = new SocketServer(port_min, this);
+			response = SocketClient.sendMsg(validHost, port_min, msg);
+			assertTrue("Testing if a localhost on port_min sends a message", response.equals(msg));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		// port_min+
 		msg = "Port 1";
-		response = SocketClient.sendMsg(invalidHost, port_min_plus, msg);
-		response = SocketClient.sendMsg(validHost, port_min_plus, msg);
+		try {
+			ss = new SocketServer(port_min_plus, this);
+			response = SocketClient.sendMsg(validHost, port_min_plus, msg);
+			assertTrue("Testing if a localhost on port port_min+ sends a message", response.equals(msg));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// port_max
 		msg = "Port 65535";
-		response = SocketClient.sendMsg(invalidHost, port_max, msg);
-		response = SocketClient.sendMsg(validHost, port_max, msg);
+		try {
+			ss = new SocketServer(port_max, this);
+			response = SocketClient.sendMsg(validHost, port_max, msg);
+			assertTrue("Testing if a localhost on port port_max sends a message", response.equals(msg));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// port_max-
 		msg = "Port 65534";
-		response = SocketClient.sendMsg(invalidHost, port_max_minus, msg);
-		response = SocketClient.sendMsg(validHost, port_max_minus, msg);
+		try {
+			ss = new SocketServer(port_max_minus, this);
+			response = SocketClient.sendMsg(validHost, port_max_minus, msg);
+			assertTrue("Testing if a localhost on port_max- sends a message", response.equals(msg));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// port_min-
+		/*
+		 * Illegal argument Exception
+		 */
+
 		msg = "Port -1";
-		response = SocketClient.sendMsg(invalidHost, port_min_minus, msg);
-		response = SocketClient.sendMsg(validHost, port_min_minus, msg);
+		try {
+			ss = new SocketServer(port_min_minus, this);
+			response = SocketClient.sendMsg(validHost, port_min_minus, msg);
+			assertTrue("Testing if a localhost on port_min- sends a message", response.equals(msg));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException iae) {
+			fail("Ports < 0 should be handled by the method");
+		}
 
 		// port_max+
+		/*
+		 * Illegal argument Exception
+		 */
 		msg = "Port 65536";
-		response = SocketClient.sendMsg(invalidHost, port_max_plus, msg);
-		response = SocketClient.sendMsg(validHost, port_max_plus, msg);
+		try {
+			ss = new SocketServer(port_max_plus, this);
+			response = SocketClient.sendMsg(validHost, port_max_plus, msg);
+			assertTrue("Testing if a localhost on port_max+ sends a message", response.equals(msg));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException iae) {
+			fail("Ports > 65535 should be handled by the method");
+		}
+	}
 
-\end{code}
+}
+\end{lstlisting}
 \end{itemize}
-
 \newpage
 \section{White Box Testing}
 
