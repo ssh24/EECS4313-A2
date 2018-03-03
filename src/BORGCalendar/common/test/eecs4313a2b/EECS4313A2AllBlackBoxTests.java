@@ -1,5 +1,6 @@
 package eecs4313a2b;
 
+<<<<<<< HEAD
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -229,6 +230,17 @@ public class EECS4313A2AllBlackBoxTests implements SocketHandler {
 		d1.setDate(4);
 		result = DateUtil.isAfter(d1, d2);
 		assertTrue("Date d1 is after d2", result);
+=======
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class EECS4313A2AllBlackBoxTests {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+>>>>>>> 639af8a... model setup
 	}
 
 }
