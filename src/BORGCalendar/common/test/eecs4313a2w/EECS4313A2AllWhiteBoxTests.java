@@ -12,7 +12,9 @@ public class EECS4313A2AllWhiteBoxTests {
 	
 	//NINE Weak Normal Equivalence classes
 	//Class 1: Minute/60 = 1 and Minute%60 = 0  (valid input) -- Testing 1 hour [Range: [1]]
-	assertEquals("1 Hour",DateUtil.minuteString(60));
+		System.out.println(DateUtil.minuteString(-61));
+
+		assertEquals("1 Hour",DateUtil.minuteString(60));
 	//Class 2: Minute/60 > 1 and Minute%60 = 0 (valid input) --Testing hours more than one [Range:[2, infinity] hours] 
 	assertEquals("3 Hours",DateUtil.minuteString(180));
 	//-------------------------------------------------
@@ -22,7 +24,8 @@ public class EECS4313A2AllWhiteBoxTests {
 	assertEquals("1 Hour 1 Minute",DateUtil.minuteString(61));
 	//Class 5: Minute/60 > 1 and Minute%60 > 1 (valid input) --Testing hours more than 1 hour with some minutes [Range:[2,infinity] hours and (1,59] minutes]
 	assertEquals("2 Hours 25 Minutes",DateUtil.minuteString(145));
-	//Class 6: Minute/60 > 1 and Minute%60 = 1 (valid input) --Testing hours more than 1 hour with some minutes [Range:[2,infinity] hours and [1] minute]
+	
+//Class 6: Minute/60 > 1 and Minute%60 = 1 (valid input) --Testing hours more than 1 hour with some minutes [Range:[2,infinity] hours and [1] minute]
 	assertEquals("2 Hours 1 Minute",DateUtil.minuteString(121));
 	//----------------------------------------------------------
 	//Class 7: Minute/60 = 0 and Minute%60 = 0 (valid input) --Testing 0 minutes [Range:[0] minute]
@@ -31,6 +34,14 @@ public class EECS4313A2AllWhiteBoxTests {
 	assertEquals("1 Minute",DateUtil.minuteString(1));
 	//Class 9: Minute/60 = 0 and Minute%60 > 1 (valid input) -- Testing minutes that are less than 1 hour [Range: (1,59] minutes]
 	assertEquals("50 Minutes",DateUtil.minuteString(50));
-	}
+	 
+	//based off the implmentation of negative inputs in the method
+	//Class 10: Minutes/60 < 0 and Minute%60 = -1 (invalid) --- Testing negative hours with negative minutes  [Range:[negative infinity] hour and [-1] minutes]
+	assertEquals("1 Minute",DateUtil.minuteString(-61)); // (-61) mod 60 = 1 but the output is -1 
+	//Class 1 : Minutes/60 < 0 and Minute%60 < -1
+	assertEquals("10 Minutes",DateUtil.minuteString(-70)); // (-71) mod 60 = 10 but the output is -10
+
 	
+	}
+
 }
