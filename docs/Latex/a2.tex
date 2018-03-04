@@ -44,6 +44,7 @@
 %%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
 
 \section{Black Box Testing}
+\label{bbt}
 
 \begin{itemize}
 \item Specification of the selected Java methods.
@@ -78,5 +79,163 @@ same bug report format as in Assignment 1. Do not file these bug reports to the 
 report system.
 \item An appendix with the specification of the methods you are testing (if there are new ones). 
 \end{itemize}
+
+\newpage
+\subsection{Decision Table Testing}
+
+\begin{itemize}
+\item \textbf{Technique}: \emph{Decision Table Testing}
+\item \textbf{Class}: \emph{net.sf.borg.common.DateUtil.java}
+\item \textbf{Method}: \emph{isAfter(Date d1, Date d2)}
+\item \textbf{Method description}: The method checks if a given date \emph{d1} falls on a later calendar day than date \emph{d2}. It returns \textbf{true} if \emph{d1} does fall on a later calendar day than \emph{d2} and \textbf{false} otherwise.
+\begin{itemize}
+\item \textbf{d1} - The first argument is of type Java Date Object.
+\item \textbf{d2} - The second argument is of type Java Date Object.
+\end{itemize}
+\item \textbf{Justification}: Decision table testing technique is an appropriate testing technique for this method because there are decision making to be done among the input variables. It consists of logical relationships among the input variables, i.e date \emph{d1} appearing before, after or at the same time as date \emph{d2}, which directly affects the output.
+\end{itemize}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/dtt/test-run.png}
+\end{center}
+\caption{Test run result for the isAfter function}
+\label{fig:wbt_dtt_test_run}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/dtt/code.png}
+\end{center}
+\caption{Statement Coverage View for the isAfter function}
+\label{fig:wbt_dtt_code}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/dtt/code-coverage.png}
+\end{center}
+\caption{Statement Coverage Metrics for the isAfter function}
+\label{fig:wbt_dtt_code_coverage}
+\end{figure}
+
+\newpage
+\subsubsection{Control Flow Graph}
+
+The following is the code snippet for the \emph{isAfter} function:
+
+\newpage
+\begin{code}
+	/**
+	 * Checks if one date falls on a later calendar day than
+	 * another.
+	 * 
+	 * @param d1
+	 *            the first date
+	 * @param d2
+	 *            the second date
+	 * 
+	 * @return true, if is after
+	 */
+	1. public static boolean isAfter(Date d1, Date d2) {
+
+	2.	GregorianCalendar tcal = new GregorianCalendar();
+	3.	tcal.setTime(d1);
+	4.	tcal.set(Calendar.HOUR_OF_DAY, 0);
+	5.	tcal.set(Calendar.MINUTE, 0);
+	6.	tcal.set(Calendar.SECOND, 0);
+	7.	GregorianCalendar dcal = new GregorianCalendar();
+	8.	dcal.setTime(d2);
+	9.	dcal.set(Calendar.HOUR_OF_DAY, 0);
+	10.	dcal.set(Calendar.MINUTE, 10);
+	11.	dcal.set(Calendar.SECOND, 0);
+
+	12.	if (tcal.getTime().after(dcal.getTime())) {
+	13.		return true;
+	14.	}
+
+	15.	return false;
+	16. }
+\end{code}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c | c |}
+	\cline{1-2}
+	\textbf{Name} & \textbf{Covered Statements}\\ \hline
+	A & from line 1 to 11 \\ \hline
+	B & if (tcal.getTime().after(dcal.getTime())) \\ \hline
+	C & return true; \\ \Xhline{2pt}
+	D & return false; \\ \hline
+\end{tabular}
+\caption {CFG Segment Table for the isAfter method}
+\label{tbl:dtt_cfg_segments}
+\end{table}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/dtt/dtt_cfg.pdf}
+\end{center}
+\caption{Control Flow Graph for the isAfter function}
+\label{fig:wbt_dtt_cfg}
+\end{figure}
+
+\clearpage
+\newpage
+\begin{itemize}
+\item \textbf{Number of paths in the method}: 2
+\begin{itemize}
+\item \textbf{Path P1} - The first path is when the method returns \emph{true} if date d1 is after date d2. Following the CFG diagram above, refer to diagram \ref{fig:wbt_dtt_cfg}, this is path is: \textbf{ABC}.
+\item \textbf{Path P2} - The second path is when the method returns \emph{false} if date d1 is not after date d2 (i.e d1 is either equal to or before d2). Following the CFG diagram above, refer to diagram \ref{fig:wbt_dtt_cfg}, this is path is: \textbf{ABD}.
+\end{itemize}
+\item \textbf{Estimated \% of path covered in the test}: 100\%
+\end{itemize}
+
+\noindent The following code snippet depicts the test case and path coverages for \emph{isAfter} function:
+\begin{code}
+	@Test
+	public void testIsAfter() {
+		/** Method used: Decision Table Testing **/
+		
+		Date d1 = new Date(117, 11, 3);
+		Date d2 = new Date(117, 11, 3);
+		boolean result;
+		
+		// date d1 is equal to d2
+		result = DateUtil.isAfter(d1, d2);
+		assertFalse("Date d1 is equal to d2", result);
+		
+		// date d1 is before d2
+		d1.setDate(2);
+		result = DateUtil.isAfter(d1, d2);
+		assertFalse("Date d1 is before d2", result);
+		
+		// date d1 is after d2
+		d1.setDate(4);
+		result = DateUtil.isAfter(d1, d2);
+		assertTrue("Date d1 is after d2", result);
+	}
+\end{code}
+
+\newpage
+\noindent Path coverage \textbf{P1}:
+\begin{code}
+		// date d1 is after d2
+		d1.setDate(4);
+		result = DateUtil.isAfter(d1, d2);
+		assertTrue("Date d1 is after d2", result);
+\end{code}
+
+\noindent Path coverage \textbf{P2}:
+\begin{code}
+		// date d1 is equal to d2
+		result = DateUtil.isAfter(d1, d2);
+		assertFalse("Date d1 is equal to d2", result);
+		
+		// date d1 is before d2
+		d1.setDate(2);
+		result = DateUtil.isAfter(d1, d2);
+		assertFalse("Date d1 is before d2", result);
+\end{code}
 
 \end{document}
