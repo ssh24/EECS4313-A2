@@ -2,6 +2,7 @@ package eecs4313a2w;
 
 import static org.junit.Assert.*;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -75,6 +76,8 @@ public class EECS4313A2AllWhiteBoxTests {
 
 =======
 =======
+=======
+>>>>>>> 500c261... added file to autotest
 import java.io.IOException;
 import org.junit.Test;
 import net.sf.borg.common.*;
@@ -280,7 +283,7 @@ public class EECS4313A2AllWhiteBoxTests implements SocketHandler {
 	 */
     //hits line 44/45 increases coverage to 88.5%
     @Test
-    public void throwExceptionTest() {
+    public void sendNullMessageTest() {
     String msg = null;
     SocketServer ss;
     String response;
@@ -319,6 +322,9 @@ public class EECS4313A2AllWhiteBoxTests implements SocketHandler {
         assertTrue("Date d1 is after d2", result);
     }
 
+<<<<<<< HEAD
 >>>>>>> 9877383... test to see if 88.5% coverage
 >>>>>>> 27b64f5... test to see if 88.5% coverage
+=======
+>>>>>>> 500c261... added file to autotest
 }

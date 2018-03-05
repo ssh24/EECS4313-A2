@@ -45,7 +45,6 @@
 
 \newpage
 \section{Black Box Testing}
-\label{bbt}
 
 \begin{itemize}
 \item Specification of the selected Java methods.
@@ -203,9 +202,101 @@ This covers the two invalid cases possible for the test based on the implementat
 \end{itemize}
 
 \newpage
-<<<<<<< HEAD
-\subsection{Decision Table Testing}
+\subsection{Boundary Value Testing}
+\begin{itemize}
+\item \textbf{Technique}: \emph{Boundary Value Testing}
+\item \textbf{Class}: \emph{net.sf.borg.common.SocketClient.java}
+\item \textbf{Method}: \emph{sendMsg(String host, int port, String msg)}
+\item \textbf{Method Description}: This method sends a given message to a given host, port and returns the response from the socket.
+\begin{itemize}
+\item the first argument \emph{host} is the host that the socket client should be connected to.
+\item the second argument \emph{port} is the port on the host that the socket client should be connected to
+\item the third argument \emph{msg} is the message that should be sent over to the host and port given.
+\end{itemize}
 
+\item \textbf{Statement Coverage Using Original Black-Box Methods}: \\ 82\%  [refer to Figures 1 \& 2]
+\item \textbf{Statement Coverage Including Additional Testcases}: \\ 88.5\% [refer to Figures 3 \& 4]
+
+\item \textbf{Branch Coverage Using Original Testcases}: \\ 50\% (4/8) [refer to Figures 5]
+\item \textbf{Branch Coverage Including Additional Testcases}: \\ 62.5\% (5/8) [refer to Figure 6]
+
+\item \textbf{The Additional Tests}: The additional tests that were added needed to cause exceptions or pass null values to the method, these two cases are not quantifiable. Thus, our original boundary value testing testsuite needed more testcases to increase coverage. The added function is further described below:
+\begin{itemize}
+\item The testcase considered if the message String sent was null. There is a null checking branch path that gets executed due to this testcase. Also, this causes an IOException to be thrown because the InputStream attempts to read in a null String.
+\end{itemize}
+\item \textbf{Why not 100\%?}: In the \emph{sendMsg} function there are two try catches to handle IOExceptions. To be able to get both innner exception segments 1 and 2 fully covered, a more granuallar approach using sockets and concurrency would be needed. At that point you are not testing the code, but rather how Java handles socket connections.
+\\
+\textbf{Segment 1}
+    \begin{code}
+    } catch (IOException e) {
+            if (s != null)
+                s.close();
+            throw e;
+    }
+    \end{code} 
+\textbf{Segment 2}
+    \begin{code}
+    finally {
+            try {
+                if (s != null)
+                    s.close();
+            } catch (IOException e2) {
+                // empty
+            }
+        }
+    \end{code} 
+
+\end{itemize}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure1.png}
+\end{center}
+\caption{Statement Coverage View for the sendMsg function before additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure2.png}
+\end{center}
+\caption{Statement Coverage Metrics for the sendMsg function before additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure3.png}
+\end{center}
+\caption{Statement Coverage View for the sendMsg function after adding additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure4.png}
+\end{center}
+\caption{Statement Coverage Metrics for the sendMsg function after adding additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure5.png}
+\end{center}
+\caption{Branch Coverage Metrics for the sendMsg function before adding additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure6.png}
+\end{center}
+\caption{Branch Coverage Metrics for the sendMsg function after adding additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+
+\clearpage
+\newpage
+
+\subsection{Decision Table Testing}
 \begin{itemize}
 \item \textbf{Technique}: \emph{Decision Table Testing}
 \item \textbf{Class}: \emph{net.sf.borg.common.DateUtil.java}
@@ -362,6 +453,7 @@ The following is the code snippet for the \emph{isAfter} function:
 \end{code}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 =======
@@ -471,4 +563,8 @@ The following is the code snippet for the \emph{isAfter} function:
 =======
 >>>>>>> fa5c41e... removed extra testcase and completed pdf
 >>>>>>> a0e8cf3... removed extra testcase and completed pdf
+=======
+\end{document}
+
+>>>>>>> 500c261... added file to autotest
 \end{document}
