@@ -13,10 +13,7 @@
 %\newcommand{\degree}[1]{^{\circ}\mathrm{#1}}
 %\newcommand{\comment}[1]{{\footnotesize \quad\texttt{--}\textrm{#1}}}
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 0685b32... version final
 %For Code Stylings
 \usepackage{listings}
 \usepackage{color}
@@ -42,10 +39,6 @@
   tabsize=3
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0685b32... version final
 % Set the header
 \ihead[]{\small EECS4313 Assignment-2}
 
@@ -85,7 +78,6 @@
 
 \section{Black Box Testing}
 
-<<<<<<< HEAD
 \subsection{Boundary Value Testing}
 
 \begin{itemize}
@@ -448,14 +440,11 @@ Applying boundary value junit testing to the sendMsg method in SocketClient reve
 
 \newpage
 \subsection{Equivalence Class Testing}
-=======
-\subsection {Equivalence Class Testing}
->>>>>>> 0685b32... version final
 
 \begin{itemize}
 \item \textbf{Technique}: \emph{Equivalence Class Testing}
 \item \textbf{Class}: \emph{net.sf.borg.common.DateUtil.java}
-\item \textbf{Method}: \emph{minuteString(int mins))}
+\item \textbf{Method}: \emph{minuteString(int mins)}
 \item \textbf{Method Description}:
 This method generate a human reable string for a particular numbe of minutes.It returns the string interms of hours or minutes or both hours and mintues.
 \item \textbf{mins} - The argument is an integer
@@ -540,7 +529,7 @@ In the Figure 1, The boxes colored in green represent all the valid output resul
 \end{figure}
 
 \newpage
-\subsection{Testing Code}
+\subsubsection{Testing Code}
 \begin{lstlisting}
 package eecs4313a2b;
 
@@ -621,6 +610,7 @@ public class EECS4313A2AllBlackBoxTests {
 \noindent \textbf{Rationale}: The decision table above outlines 8 rules. The rules are derived from three equivalence classes: d1 is less than d2, d1 is equal to d2 and d1 is greater than d2. Each equivalence class can have 2 different values (i.e T or F), giving us $2^3 = 8$ rules. Out of the 8 rules, 5 of the rules points to \emph{Impossible} cases, hence cannot be converted to test cases. The other 3 rules are converted into test cases. Below is the code snippet and the test run screenshot for the test cases derived using the decision table technique.
 
 \newpage
+\subsubsection{Testing Code}
 \begin{code}
 	@Test
 	public void testIsAfter() {
@@ -664,7 +654,7 @@ coverage. The marker will not read your code in order to see what you tested. Yo
 describe it.
 \item The statement coverage measurements for your final submission. Include the screenshots of
 the test running results and the screenshots of the coverage measurement. If your coverage is
-not 100\%, include a discussion on why that is.
+not 100%, include a discussion on why that is.
 \item The Control Flow Graph you created. Indicate the segments clearly (you will probably need
 to include the code for this).
 \item The path coverage discussion described in section 2 above.
