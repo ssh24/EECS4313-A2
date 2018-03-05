@@ -13,6 +13,32 @@
 %\newcommand{\degree}[1]{^{\circ}\mathrm{#1}}
 %\newcommand{\comment}[1]{{\footnotesize \quad\texttt{--}\textrm{#1}}}
 
+
+%For Code Stylings
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
 % Set the header
 \ihead[]{\small EECS4313 Assignment-2}
 
@@ -43,7 +69,6 @@
 
 %%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
 
-\newpage
 \section{Black Box Testing}
 
 \begin{itemize}
@@ -62,7 +87,7 @@ report system.
 
 \newpage
 \section{White Box Testing}
-\label{wbt}
+
 
 \subsection {Equivalence Class Testing}
 
@@ -222,7 +247,24 @@ This covers the two invalid cases possible for the test based on the implementat
 
 \item \textbf{The Additional Tests}: The additional tests that were added needed to cause exceptions or pass null values to the method, these two cases are not quantifiable. Thus, our original boundary value testing testsuite needed more testcases to increase coverage. The added function is further described below:
 \begin{itemize}
-\item The testcase considered if the message String sent was null. There is a null checking branch path that gets executed due to this testcase. Also, this causes an IOException to be thrown because the InputStream attempts to read in a null String.
+\item The testcase \emph{sendNullMessageTest} considered if the message String sent was null. There is a null checking branch path that gets executed due to this testcase. Also, this causes an IOException to be thrown because the InputStream attempts to read in a null String.
+
+\begin{lstlisting}
+    @Test
+    public void sendNullMessageTest() {
+    String msg = null;
+    SocketServer ss;
+    String response;
+        try {
+            ss = new SocketServer(2920, null);
+            response = SocketClient.sendMsg("localhost", 2920, msg);
+            assertEquals("Testing if a localhost on port 2920 sends a message", response,msg);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+\end{lstlisting}
 \end{itemize}
 \item \textbf{Why not 100\%?}: In the \emph{sendMsg} function there are two try catches to handle IOExceptions. To be able to get both innner exception segments 1 and 2 fully covered, a more granuallar approach using sockets and concurrency would be needed. At that point you are not testing the code, but rather how Java handles socket connections.
 \\
@@ -295,8 +337,8 @@ This covers the two invalid cases possible for the test based on the implementat
 
 \clearpage
 \newpage
-
 \subsection{Decision Table Testing}
+
 \begin{itemize}
 \item \textbf{Technique}: \emph{Decision Table Testing}
 \item \textbf{Class}: \emph{net.sf.borg.common.DateUtil.java}
@@ -452,119 +494,4 @@ The following is the code snippet for the \emph{isAfter} function:
 		assertFalse("Date d1 is before d2", result);
 \end{code}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-=======
-\subsection{Boundary Value Testing}
-\begin{itemize}
-\item \textbf{Technique}: \emph{Boundary Value Testing}
-\item \textbf{Class}: \emph{net.sf.borg.common.SocketClient.java}
-\item \textbf{Method}: \emph{sendMsg(String host, int port, String msg)}
-\item \textbf{Method Description}: This method sends a given message to a given host, port and returns the response from the socket.
-\begin{itemize}
-\item the first argument \emph{host} is the host that the socket client should be connected to.
-\item the second argument \emph{port} is the port on the host that the socket client should be connected to
-\item the third argument \emph{msg} is the message that should be sent over to the host and port given.
-\end{itemize}
-
-\item \textbf{Statement Coverage Using Original Black-Box Methods}: \\ 82\%  [refer to Figures 1 \& 2]
-\item \textbf{Statement Coverage Including Additional Testcases}: \\ 88.5\% [refer to Figures 3 \& 4]
-
-\item \textbf{Branch Coverage Using Original Testcases}: \\ 50\% (4/8) [refer to Figures 5]
-\item \textbf{Branch Coverage Including Additional Testcases}: \\ 62.5\% (5/8) [refer to Figure 6]
-
-\item \textbf{The Additional Tests}: The additional tests that were added needed to cause exceptions or pass null values to the method, these two cases are not quantifiable. Thus, our original boundary value testing testsuite needed more testcases to increase coverage. The added function is further described below:
-\begin{itemize}
-\item The testcase considered if the message String sent was null. There is a null checking branch path that gets executed due to this testcase. Also, this causes an IOException to be thrown because the InputStream attempts to read in a null String.
-\end{itemize}
-\item \textbf{Why not 100\%?}: In the \emph{sendMsg} function there are two try catches to handle IOExceptions. To be able to get both innner exception segments 1 and 2 fully covered, a more granuallar approach using sockets and concurrency would be needed. At that point you are not testing the code, but rather how Java handles socket connections.
-\\
-\textbf{Segment 1}
-    \begin{code}
-    } catch (IOException e) {
-            if (s != null)
-                s.close();
-            throw e;
-    }
-    \end{code} 
-\textbf{Segment 2}
-    \begin{code}
-    finally {
-            try {
-                if (s != null)
-                    s.close();
-            } catch (IOException e2) {
-                // empty
-            }
-        }
-    \end{code} 
-
-\end{itemize}
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure1.png}
-\end{center}
-\caption{Statement Coverage View for the sendMsg function before additional testcases}
-\label{fig:wbt_bvt_code}
-\end{figure}
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure2.png}
-\end{center}
-\caption{Statement Coverage Metrics for the sendMsg function before additional testcases}
-\label{fig:wbt_bvt_code}
-\end{figure}
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure3.png}
-\end{center}
-\caption{Statement Coverage View for the sendMsg function after adding additional testcases}
-\label{fig:wbt_bvt_code}
-\end{figure}
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure4.png}
-\end{center}
-\caption{Statement Coverage Metrics for the sendMsg function after adding additional testcases}
-\label{fig:wbt_bvt_code}
-\end{figure}
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure5.png}
-\end{center}
-\caption{Branch Coverage Metrics for the sendMsg function before adding additional testcases}
-\label{fig:wbt_bvt_code}
-\end{figure}
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure6.png}
-\end{center}
-\caption{Branch Coverage Metrics for the sendMsg function after adding additional testcases}
-\label{fig:wbt_bvt_code}
-\end{figure}
-
-<<<<<<< HEAD
-\item \textbf{The Additional Statements}: The additional tests added to increase line coverage needed to cause exceptions or pass values to the method which were not quantifiable. Thus, our original boundary value testing testcases needed more methods to increase coverage. The two added functions are further described below:
-\begin{itemize}
-\item One testcase considered if the message string sent was null. There is a null checking branch path that gets executed due to this testcase.
-\item The other testcase triggers an exception which causes the sendMsg method to enter the exception related branches. This test case triggers multiple exception conditionals due to closing the socket before the \emph{sendMsg} function is executed.
-\end{itemize}
-\item \textbf{Why not 100\%?}: In the \emph{sendMsg} function there is a statement which 
-\end{itemize}
->>>>>>> 7a3b6fe... pls check that coverage is now 96.7%
-<<<<<<< HEAD
->>>>>>> f9f2a58... pls check that coverage is now 96.7%
-=======
-=======
->>>>>>> fa5c41e... removed extra testcase and completed pdf
->>>>>>> a0e8cf3... removed extra testcase and completed pdf
-=======
-\end{document}
-
->>>>>>> 500c261... added file to autotest
 \end{document}
