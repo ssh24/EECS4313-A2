@@ -13,6 +13,32 @@
 %\newcommand{\degree}[1]{^{\circ}\mathrm{#1}}
 %\newcommand{\comment}[1]{{\footnotesize \quad\texttt{--}\textrm{#1}}}
 
+
+%For Code Stylings
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
 % Set the header
 \ihead[]{\small EECS4313 Assignment-2}
 
@@ -42,23 +68,374 @@
 
 
 %%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
+\section{Specifications}
+\begin{itemize}
+\item \textbf{The Goal}: We were given the BORG Calendar Application and relevant configuration files to apply black-box and white-box testing techniques taught in class on 3 methods of our choice.
+\item \textbf{Software to be tested}: BORG Calendar v.1.8.3
+\item \textbf{Testing Framework}: JUnit 4, accessed through both Eclipse UI and command-line
+\item \textbf{Langauge}: Java
+\end{itemize}
 
 \section{Black Box Testing}
 
 \subsection{Boundary Value Testing}
 
 \begin{itemize}
-\item Specification of the selected Java methods.
-\item Justification of the testing technique chosen, i.e., why is it appropriate for this method.
-\item Description of your application of the three testing strategies. Be clear about which test cases
-you implemented.
-\item Evaluation of the test cases derived by the testing technique. Include the screenshots of the
-test running results. If you had to complement the derived test cases with special value 
-testing, describe that as well. The marker will not read your code in order to see what you
-tested. You have to describe it.
-\item Attaching bug reports if bugs are discovered using your testing methods. You should use the
-same bug report format as in Assignment 1. Do not file these bug reports to the project’s bug
-report system. 
+\item \textbf{Technique}: \emph{Boundary Value Testing}
+\item \textbf{Class}: \emph{net.sf.borg.common.SocketClient.java}
+\item \textbf{Method}: \emph{sendMsg(String host, int port, String msg)}
+\item \textbf{Method Description}:
+This method sends a given message to a given host, port and returns the response from the socket.
+\begin{itemize}
+\item the first argument \emph{host} is the host that the socket client should be connected to.
+\item the second argument \emph{port} is the port on the host that the socket client should be connected to
+\item the third argument \emph{msg} is the message that should be sent over to the host and port given.
+\end{itemize}
+\begin{description}
+\item[IOException:] If an I/O error occurs when sending the message.
+\end{description}
+\item \textbf{Justification}: Boundary value testing is best suited for methods that have inputs that could be seperated into partitions. For this method the port could be partitioned. We have our valid partition which is between 0 and 65535 (inclusive) and our invalid partitions which is any port\textless 0 or any port\textgreater 65535. The msg could be anything and the host could be partitioned into valid/invalid hostnames.
+\item \textbf{Evaluation}: The tests below applies weak robust testing and weak normal testingon the method \emph{sendMsg}. Weak normal testing passes but weak robust testing reveals a bug within the method that causes the method to throw an \mbox{IllegalArgumentException} if the port parameter is outside the specified range of valid port values, which is between 0 and 65535, inclusive.\\ \\
+The tests are designed to not fail on any  \mbox{IOExceptions} that may occur such as \mbox{UnknownHostException} or \mbox{ConnectionException} since the method specifies that it may \emph{throw} an \mbox{IOException}. \\ \\
+Refer to Figure.~\ref{fig:bbt_bvt3} and Listing.~\ref{list:weak_normal} for weak normal testing.\\Refer to Figure.~\ref{fig:bbt_bvt1}, Figure.~\ref{fig:bbt_bvt2} and Listing ~\ref{list:weak_robust} for weak robust testing.
+
+\begin{lstlisting}[caption={Weak Normal Testing Variables},label={list:weak_normal}]
+String validHost = "localhost";
+port_norm = 2929; // x_norm
+port_min = 0; // x_min
+port_min_plus = 1; // x_min+
+port_max = 65535; // x_max
+port_max_minus = 65534; // x_max-
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Weak Robust Testing Variables},label={list:weak_robust}]
+String validHost = "localhost";
+port_norm = 2929; // x_norm
+port_min = 0; // x_min
+port_min_plus = 1; // x_min+
+port_max = 65535; // x_max
+port_max_minus = 65534; // x_max-
+// robustness
+String invalidHost = "asdfasdf"; //unknownhostexception
+int port_min_minus = -1; // x_min-
+int port_max_plus = 65536; // x_max_+
+\end{lstlisting}
+\newpage
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/bbt/bvt-fail-1.png}
+\end{center}
+\caption{Test results using Weak Robust Boundary Value Testing}
+\label{fig:bbt_bvt1}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/bbt/bvt-fail-2.png}
+\end{center}
+\caption{Test results using Weak Robust Boundary Value Testing}
+\label{fig:bbt_bvt2}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/bbt/bvt-pass.png}
+\end{center}
+\caption{Test results using Weak Normal Boundary Value Testing}
+\label{fig:bbt_bvt3}
+\end{figure}
+
+\newpage
+\subsubsection{Testing Code}
+\begin{lstlisting}
+public class EECS4313A2AllBlackBoxTests implements SocketHandler {
+
+	/**
+	 * process a socket message
+	 */
+	@Override
+	public synchronized String processMessage(String msg) {
+		return msg;
+	}
+	@Test
+	public void test_sendMsg_WeakNormal() {
+		/** Method used: Boundary Value Testing **/
+		String validHost = "localhost";
+
+		int port_norm = 2929; // x_norm
+		int port_min = 0; // x_min
+		int port_min_plus = 1; // x_min+
+		int port_max = 65535; // x_max
+		int port_max_minus = 65534; // x_max-
+
+		String response = "";
+		// port_norm
+		String msg = "Port 2929";
+		SocketServer ss = new SocketServer(port_norm, this);
+		try {
+			response = SocketClient.sendMsg(validHost, port_norm, msg);
+			assertEquals("Testing if a localhost on port_norm sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// port_min
+		/*
+		 * Throws connection problem. port 0 isn't available on my computer Connect
+		 * Exception extends Socket Exception which extends IOException
+		 */
+		msg = "Port 0";
+		try {
+			ss = new SocketServer(port_min, this);
+			response = SocketClient.sendMsg(validHost, port_min, msg);
+			assertEquals("Testing if a localhost on port_min sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// port_min+
+		msg = "Port 1";
+		try {
+			ss = new SocketServer(port_min_plus, this);
+			response = SocketClient.sendMsg(validHost, port_min_plus, msg);
+			assertEquals("Testing if a localhost on port port_min+ sends a message", response, msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// port_max
+		msg = "Port 65535";
+		try {
+			ss = new SocketServer(port_max, this);
+			response = SocketClient.sendMsg(validHost, port_max, msg);
+			assertEquals("Testing if a localhost on port port_max sends a message", response, msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// port_max-
+		msg = "Port 65534";
+		try {
+			ss = new SocketServer(port_max_minus, this);
+			response = SocketClient.sendMsg(validHost, port_max_minus, msg);
+			assertEquals("Testing if a localhost on port_max- sends a message", response, msg);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void test_sendMsg_WeakRobust() {
+		/** Method used: Boundary Value Testing **/
+		String validHost = "localhost";
+
+		int port_norm = 2929; // x_norm
+		int port_min = 0; // x_min
+		int port_min_plus = 1; // x_min+
+		int port_max = 65535; // x_max
+		int port_max_minus = 65534; // x_max-
+
+		// robustness
+		String invalidHost = "asdfasdf";
+		int port_min_minus = -1; // x_min-
+		int port_max_plus = 65536; // x_max_+
+
+		String response = "";
+		// port_norm
+		String msg = "Port 2929";
+		SocketServer ss = new SocketServer(port_norm, this);
+		try {
+			response = SocketClient.sendMsg(validHost, port_norm, msg);
+			assertEquals("Testing if a localhost on port_norm sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		/* Unknown host exception extends IOException */
+		try {
+			response = SocketClient.sendMsg(invalidHost, port_norm, msg);
+			assertEquals("Testing if an invalid host on port_norm sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// port_min
+		/*
+		 * Throws connection problem. port 0 isn't available on my computer Connect
+		 * Exception extends Socket Exception which extends IOException
+		 */
+		msg = "Port 0";
+		try {
+			ss = new SocketServer(port_min, this);
+			response = SocketClient.sendMsg(validHost, port_min, msg);
+			assertEquals("Testing if a localhost on port_min sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// port_min+
+		msg = "Port 1";
+		try {
+			ss = new SocketServer(port_min_plus, this);
+			response = SocketClient.sendMsg(validHost, port_min_plus, msg);
+			assertEquals("Testing if a localhost on port port_min+ sends a message", response, msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// port_max
+		msg = "Port 65535";
+		try {
+			ss = new SocketServer(port_max, this);
+			response = SocketClient.sendMsg(validHost, port_max, msg);
+			assertEquals("Testing if a localhost on port port_max sends a message", response, msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// port_max-
+		msg = "Port 65534";
+		try {
+			ss = new SocketServer(port_max_minus, this);
+			response = SocketClient.sendMsg(validHost, port_max_minus, msg);
+			assertEquals("Testing if a localhost on port_max- sends a message", response, msg);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// port_min-
+		/*
+		 * Illegal argument Exception
+		 */
+		msg = "Port -1";
+		try {
+			ss = new SocketServer(port_min_minus, this);
+			response = SocketClient.sendMsg(validHost, port_min_minus, msg);
+			assertEquals("Testing if a localhost on port_min- sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException iae) {
+			fail("Ports < 0 should be handled by the method");
+		}
+
+		// port_max+
+		/*
+		 * Illegal argument Exception
+		 */
+		msg = "Port 65536";
+		try {
+			ss = new SocketServer(port_max_plus, this);
+			response = SocketClient.sendMsg(validHost, port_max_plus, msg);
+			assertEquals("Testing if a localhost on port_max+ sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException iae) {
+			fail("Ports > 65535 should be handled by the method");
+		}
+	}
+\end{lstlisting}
+\newpage
+\subsubsection{Bug Report}
+\begin{itemize}
+\item \textbf{Bug Report Title}: Socket port values below 0 or above 65535 causes application to not be runnable after restart.
+\item \textbf{Reported by}: Edward Vaisman
+\item \textbf{Date reported}: March, 3rd, 2018
+\item \textbf{Program (or component) name}: BORG Calendar version 1.8.3 - SocketServer Constructor, SocketClient sendMsg,  PrefName.SOCKETPORT
+\item \textbf{Configuration(s)}:\\
+\underline{System Info}
+\begin{itemize}
+\item{Operating System: Windows 10 Home 64-bit (10.0, Build 16299) (16299.rs3\_release.170928-1534)}
+\item {Language: English (Regional Setting: English)}
+\item {System Manufacturer: Dell Inc.}
+\item {System Model: Inspiron 7559}
+\item {Display Device: Intel(R) HD Graphics 530}
+\item {Processor: Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz (8 CPUs), ~2.6GHz }
+\item {Memory: 8192MB RAM}
+\item {BORG Calendar Version: 1.8.3}
+\item {Java Version: 1.8.0\_161}
+\end{itemize}
+\underline{BORG Settings}
+\begin{itemize}
+\item{Socket Port: -2929}
+\end{itemize}
+\item \textbf{Report type}: Coding Error.
+\item \textbf{Reproducibility}: 100\% (Tested on 4 seperate machines.)
+\item \textbf{Severity}: High (Fatal)
+\item \textbf{Problem summary}: After changing the socket port to -2929 and restarting the application causes BORG to be unusable even after a clean install.
+\item \textbf{Problem description}:\\
+Applying boundary value junit testing to the sendMsg method in SocketClient reveals that PrefName.SOCKETPORT is allowed to store socketports that aren't valid. As a result it causes an unhandled exception to throw in SocketClient and SocketServer when trying to use a port that isn't valid. The reproduction steps describe how to reach this bug within the application. \\
+\underline{Steps to Reproduce in Application}
+\begin{enumerate}
+
+\item{Run the application}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.5\textwidth]{images/bbt/bvt-step1.png}
+\end{center}
+\caption{Run the application}
+\label{fig:bbt_bvtstep1}
+\end{figure}
+
+\item{Select ``Options'' $\to$ ``Edit Preferences''.}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.5\textwidth]{images/bbt/bvt-step2.png}
+\end{center}
+\caption{Opening the options window}
+\label{fig:bbt_bvtstep2}
+\end{figure}
+\newpage
+\item{The ``Options'' window appears. Select the ``Miscellaneous'' Tab.}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.5\textwidth]{images/bbt/bvt-step3.png}
+\end{center}
+\caption{Selecting the Miscellaneous Tab}
+\label{fig:bbt_bvtstep3}
+\end{figure}
+
+\item{Change Socket Port from 2929 to -2929 and press apply.}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.4\textwidth]{images/bbt/bvt-step4.png}
+\includegraphics[width=.4\textwidth]{images/bbt/bvt-step4p2.png}
+\includegraphics[width=.4\textwidth]{images/bbt/bvt-step5.png}
+\end{center}
+\caption{Changing the port (Part 1)}
+\label{fig:bbt_bvtstep4}
+\end{figure}
+
+\item{Restart BORG.}
+\end{enumerate}
+\underline{Results}
+\begin{itemize}
+\item{Expected Results: Error message prompting the use of a valid socket port.}
+\item{Real Results: Unable to run the application and thus not able to access calendar data.}
+\begin{enumerate}
+\item{Unable to run BORG after application restart}
+\item{Unable to run BORG after clean uninstall and re-install}
+\item{Unable to run BORG off a USB}
+\item{Unable to run BORG after system restart}
+\item{Unable to run BORG after java re-install}
+\end{enumerate}
+\end{itemize}
+\underline{Additional Tests}\\
+{Goals: To verify if the error only occurs with negative numbers/any port that is not 2929 or exactly with port -2929 or an error that occurs when attempting to change the port at all.}
+\begin{enumerate}
+\item{Attempt to reproduce with port 20. No errors.}
+\item{Attempt to reproduce with port 1. No errors.}
+\item{Attempt to reproduce with port -1. No errors.}
+\item{Attempt to reproduce with port -20. Bug occured.}
+\item{Attempt to reproduce by changing the port to -2929, applying the changes, and then setting it back to 2929 and applying changes. Bug occured.}
+\item{Attempt to reproduce with port 65536. Bug occured.}
+\end{enumerate}
+\item \textbf{New or old bug}: New
+\end{itemize}
 \end{itemize}
 
 \newpage
