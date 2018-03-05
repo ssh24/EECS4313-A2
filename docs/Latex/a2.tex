@@ -43,7 +43,7 @@
 
 %%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
 
-\section{Black Box Testing}
+\section{White Box Testing}
 
 \subsection {Equivalence Class Testing}
 
@@ -53,7 +53,9 @@
 \item \textbf{Method}: \emph{minuteString(int mins))}
 \item \textbf{Method Description}:
 This method generate a human reable string for a particular numbe of minutes.It returns the string interms of hours or minutes or both hours and mintues.
+\begin{itemize}
 \item \textbf{mins} - The argument is an integer
+\end{itemize}
 \item \textbf{Justification}: Equivalence class testing is suitable for this method since argument of this method is an integer which is an independent variable and the entire range of input can be partitioned while assuring disjointness and non-redundancy between each partition set. We have chosen these partition integer range based on when we use minute, minutes, hour, and hours.In order to partition the integer argument into hours and minutes,we divide the Minutes by 60 to get the range of hours and  the remainder ( minutes \% 60) to get the range of the minutes.The paritions for this method are:
  \begin{itemize}
 \item \textbf{ Mins / 60 = 1 and Mins \% 60 = 0 :} To test 1 hour.
@@ -102,49 +104,118 @@ This method generate a human reable string for a particular numbe of minutes.It 
  \item Range of minutes: (1,59]
 \end{itemize}
 \end{itemize}
-The method did not specifity how negative minutes should be treated, so we omit  the negative integers as an argument for this method.For example, -75 can be converted as -1 hour and 15 minutes or 45 minutes or any other way. Therefore, this case is tested in the whitebox testing after analyzing structure of the method.
-\item \textbf{Evaluation :}  The tests are shown below suitable for strong normal equivalence class testing technique since it covers the all the range of outputs for valid inputs and invalid inputs (negative integers) are not tested due to lack of specfication information regarding these values. 
+The method did not specifity how negative minutes should be treated, so we omit  the negative integers as an argument for this method.For example, -75 can be converted as -1 hour and 15 minutes or 45 minutes or any other way. Therefore, this case is tested in the whitebox testing thorugh additional test cases after analyzing structure of the method.
+
+\item \textbf {Statement Coverage Using Black-Box Methods :}
+100\% [ refer to Figure 1 \& 2 ] 
+\item \textbf {Justification for getting 100\% in blackbox tests :} Since the method converts the interger in terms of human readable minutes and hours, the range of valid outputs can be partition as described in the method description. Since we know how the conversion of integer values into hours and minutes are implemented, there is a need to check negative integers.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/ect/bbt_ect.png}
+\end{center}
+\caption{Test run result for the minuteString functionn}
+\label{fig:bbt_ect_pass}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.90\textwidth]{images/wbt/ect/statement_coverage.png}
+\end{center}
+\caption{Statement Coverage View for the minuteString function}
+\label{fig:wbt_ect_code}
+\end{figure}
+
+\item \textbf{Additional cases:} Since hours are implemented by dividing integer by 60, the negative integers can produce negative hours . Also, negative hours produced emptystring according to the implementation.However, minutes are computed by taking the reminder of the division ( mins\%60) this will produce a positive number since reminder cannot be negative. Therefore, only two cases we can check in this whitebox testing procedure.They are :
+\newpage
  \begin{itemize}
-\item \textbf{Class 1:} Mins / 60 = 1 and Mins \% 60 = 0 
-\item \textbf{Class 2:}  Mins / 60 = 1 and Mins \% 60 = 1
-\item \textbf{Class 3:} Mins / 60 = 1 and Mins \% 60  $>$  1
-\item \textbf{Class 4:} Mins / 60 $>$ 1 and Mins \% 60 = 0
-\item \textbf{Class 5:} Mins / 60 $>$ 1 and Mins \% 60 = 1
-\item \textbf{Class 6:} Mins / 60 $>$ 1 and Mins \% 60 $>$ 1
-\item \textbf{Class 7:} Mins / 60 = 0 and Mins \% 60 = 0
-\item \textbf{Class 8:} Mins / 60 = 0 and Mins \% 60 = 1
-\item \textbf{Class 9:} Mins / 60 = 0 and Mins \% 60 $>$ 1
+\item Mins/60 $<$ 0 and Mins\%60 $>$ 1 - To test negative hours with more than 1 minut [ Class 10]
+ \begin{itemize}
+ \item Range of hours: (0,$-\infty$)
+ \item Range of minutes: [1]
+\end{itemize}
+\item Mins/60 $<$ 0 and Mins\%60 = 1 -  To test negative with 1 minute [Class 11]
+ \begin{itemize}
+ \item Range of hours: (0,$-\infty$)
+ \item Range of minutes: (0,59]
+\end{itemize}
+This covers the two invalid cases possible for the test based on the implementation of the method. since we can only convert negative integers in terms of minutes according to the implementation of the method.This is shown in Figure 3.However these two cases produced a bug because the method is producing negative results instead of positive results since we cannot have negative reminder. this causes the bug. The test cases fail for the two cases are shown in figure 4.
+
+
+ \end{itemize}
+
+
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/ect/wbtmatrix.png}
+\end{center}
+\caption{Possible invalid cases for the minuteString function}
+\label{fig:wbt_ect_cfg}
+\end{figure}
+Red coloured boxes in Figure 3 are representing impossible cases since negative integers can be only converted to minutes according to the implementation.Yellow colored boxes show the addtional tests cases that we test in the whitebox and the green boxes are valid outputs that we checked in blackbox test cases.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/ect/bug.png}
+\end{center}
+\caption{Additional test cases fail due to a bug in the minuteString function}
+\label{fig:wbt_ect_bug}
+\end{figure}
+\newpage
+\newpage
+
+
+%%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
+
+\section{Reporting Bugs or Proposing Enhancements}
+
+\subsection{First Bug Report}
+
+\begin{itemize}
+\item \textbf{Bug Report Title}: minuteString Method does not output the correct result for negative integers
+\item \textbf{Reported by}: Kirusanth Thiruchelvam
+\item \textbf{Date reported}: March 3, 2018
+\item \textbf{Program (or component) name}: net.sf.borg.common.DateUtil.minuteString()
+\item \textbf{Configuration(s)}:
+\begin{itemize}
+\item Operating System: Windows 10 Pro 
+\item Version: 10.0.1.16299 Build 16299
+\item System Manufacturer: SAMSUNG ELECTRONICS CO., LTD.
+\item System Model: QX310/QX410/QX510/SF310/SF410/SF510
+\item BIOS: AMIBIOS Version 03MX.M005.20101011.SCY 
+\item Processor: Intel(R) Core(TM) i5 CPU   M 460   @ 2.53 GHZ (4CPUs), ~ 2.5GHz
+\item Memory: 8192 MB RAM
+\item Display Device: Intel(R) HD Graphics (Core i5)
+\item BORG Calendar Version: 1.8.3
+\item Java Version: 1.8.0\_161
+\end{itemize}
+\item \textbf{Report type}: Coding Error
+\item \textbf{Reproducibility}: 100\%
+\item \textbf{Severity}: Low
+\item \textbf{Problem summary}: When inputing a negative integer as an argument for the minuteString method in Data Util. It produces the number in negative which is not correct since the reminder of the negative integer cannot be ne neagitive.
+\item \textbf{Problem description}:\newline
+\underline{Steps to Reproduce}
+\begin{enumerate}
+\item Load the source code of Borg Calender in Java
+ \item Create a new junit test case
+ \item call the net.sf.borg.common.DateUtil.minuteString() in the class with -70 as an argument
+\end {enumerate}
+ \underline{ Results}
+\item Expected Results: After inputing the -70, it should gives 10 as the output since hour produce empty string and only minutes produce the results.The expected result is to see positive 10 but it gives -10 since (-70) mod 60 is 10 minutes.
+\item Real Results: The actual result produce the bug since it shows -10 as the outputs.
+\item \textbf{New or old bug}: New
 \end{itemize}
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.99\textwidth]{images/bbt/bbtmatrix.png}
+\includegraphics[width=.99\textwidth]{images/wbt/ect/cfg.png}
 \end{center}
-\caption{Proving the test cases produce Strong Normal ECT}
-\label{fig:bbt_matrix}
+\caption{Control Flow Graph for the minuteString function}
+\label{fig:wbt_ect_cfg}
 \end{figure}
-In the Figure 1, The boxes colored in green represent all the valid output results and red boxes represent the invalid results which cannot be tested since the method did not specify how the negative integers should be treated. The Class 1,Class 2....Class 9 represents the partitions that we derived from how to convert the integers into readable string.
+
 
 
 \end{itemize}
 
-\newpage
-\section{White Box Testing}
-
-\begin{itemize}
-\item The statement coverage measurements for your Assignment 2 test suite.
-\item A description of the test cases that you added in this assignment to improve statement
-coverage. The marker will not read your code in order to see what you tested. You have to
-describe it.
-\item The statement coverage measurements for your final submission. Include the screenshots of
-the test running results and the screenshots of the coverage measurement. If your coverage is
-not 100\%, include a discussion on why that is.
-\item The Control Flow Graph you created. Indicate the segments clearly (you will probably need
-to include the code for this).
-\item The path coverage discussion described in section 2 above.
-\item Attaching bug reports if bugs are discovered using your testing methods. You should use the
-same bug report format as in Assignment 1. Do not file these bug reports to the project’s bug
-report system.
-\item An appendix with the specification of the methods you are testing (if there are new ones). 
-\end{itemize}
 
 \end{document}
