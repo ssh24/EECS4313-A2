@@ -13,7 +13,10 @@
 %\newcommand{\degree}[1]{^{\circ}\mathrm{#1}}
 %\newcommand{\comment}[1]{{\footnotesize \quad\texttt{--}\textrm{#1}}}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0685b32... version final
 %For Code Stylings
 \usepackage{listings}
 \usepackage{color}
@@ -39,6 +42,10 @@
   tabsize=3
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0685b32... version final
 % Set the header
 \ihead[]{\small EECS4313 Assignment-2}
 
@@ -78,6 +85,7 @@
 
 \section{Black Box Testing}
 
+<<<<<<< HEAD
 \subsection{Boundary Value Testing}
 
 \begin{itemize}
@@ -440,19 +448,143 @@ Applying boundary value junit testing to the sendMsg method in SocketClient reve
 
 \newpage
 \subsection{Equivalence Class Testing}
+=======
+\subsection {Equivalence Class Testing}
+>>>>>>> 0685b32... version final
 
 \begin{itemize}
-\item Specification of the selected Java methods.
-\item Justification of the testing technique chosen, i.e., why is it appropriate for this method.
-\item Description of your application of the three testing strategies. Be clear about which test cases
-you implemented.
-\item Evaluation of the test cases derived by the testing technique. Include the screenshots of the
-test running results. If you had to complement the derived test cases with special value 
-testing, describe that as well. The marker will not read your code in order to see what you
-tested. You have to describe it.
-\item Attaching bug reports if bugs are discovered using your testing methods. You should use the
-same bug report format as in Assignment 1. Do not file these bug reports to the project’s bug
-report system. 
+\item \textbf{Technique}: \emph{Equivalence Class Testing}
+\item \textbf{Class}: \emph{net.sf.borg.common.DateUtil.java}
+\item \textbf{Method}: \emph{minuteString(int mins))}
+\item \textbf{Method Description}:
+This method generate a human reable string for a particular numbe of minutes.It returns the string interms of hours or minutes or both hours and mintues.
+\item \textbf{mins} - The argument is an integer
+\item \textbf{Justification}: Equivalence class testing is suitable for this method since argument of this method is an integer which is an independent variable and the entire range of input can be partitioned while assuring disjointness and non-redundancy between each partition set. We have chosen these partition integer range based on when we use minute, minutes, hour, and hours.In order to partition the integer argument into hours and minutes,we divide the Minutes by 60 to get the range of hours and  the remainder ( minutes \% 60) to get the range of the minutes.The paritions for this method are:
+ \begin{itemize}
+\item \textbf{ Mins / 60 = 1 and Mins \% 60 = 0 :} To test 1 hour.
+ \begin{itemize}
+ \item Range of hours: [1]
+ \item Range of minutes: [0]
+\end{itemize}
+\item \textbf{ Mins / 60 = 1 and Mins \% 60 = 1 :} To test the 1 hour with 1 minute.
+ \begin{itemize}
+ \item Range of hours: (1,$+\infty$)
+ \item Range of minutes: [1]
+\end{itemize}
+\item \textbf{ Mins / 60 = 1 and Mins \% 60  $>$  1 :} To test 1 hour with minutes more than 1 minute. 
+ \begin{itemize}
+ \item  Range of hours: [1]
+\item  Range of Minutes : (1, 59]
+\newpage
+\end{itemize}
+\item \textbf{ Mins / 60 $>$ 1 and Mins \% 60 = 0 :} To test the hours more than 1 hour.
+ \begin{itemize}
+ \item Range of hours: (1,$+\infty$)
+ \item Range of minutes: [0]
+\end{itemize}
+\item \textbf{ Mins / 60 $>$ 1 and Mins \% 60 = 1 :} To test hours more than 1 hour with 1 minute. 
+ \begin{itemize}
+ \item Range of hours: (1,$+\infty$)
+\item Range of Minutes :[1]
+\end{itemize}
+\item \textbf{ Mins / 60 $>$ 1 and Mins \% 60 $>$ 1 :} To test the hours more than 1 hour with minutes more than 1 minute. 
+ \begin{itemize}
+ \item Range of hours:  (1,$+\infty$) 
+\item Range of Minutes : (1, 59]
+\end{itemize}
+\item \textbf{ Mins / 60 = 0 and Mins \% 60 = 0 :} To test 0 minutes.
+ \begin{itemize}
+ \item Range of hours: [0]
+ \item Range of minutes: [0]
+\end{itemize}
+\item \textbf{ Mins / 60 = 0 and Mins \% 60 = 1 :} To test 1 minute.
+ \begin{itemize}
+ \item Range of hours: [0]
+ \item Range of minutes: [1]
+\end{itemize}
+\item \textbf{ Mins / 60 = 0 and Mins \% 60 $>$ 1 :} To test minutes more than 1 minute and less than 60 minutes or 1 hour.
+ \begin{itemize}
+ \item Range of hours: [0]
+ \item Range of minutes: (1,59]
+\end{itemize}
+\end{itemize}
+The method did not specifity how negative minutes should be treated, so we omit  the negative integers as an argument for this method.For example, -75 can be converted as -1 hour and 15 minutes or 45 minutes or any other way. Therefore, this case is tested in the whitebox testing after analyzing structure of the method.
+\item \textbf{Evaluation :}  The tests are shown below suitable for strong normal equivalence class testing technique since it covers the all the range of outputs for valid inputs and invalid inputs (negative integers) are not tested due to lack of specfication information regarding these values. 
+\newpage
+ \begin{itemize}
+\item \textbf{Class 1:} Mins / 60 = 1 and Mins \% 60 = 0 
+\item \textbf{Class 2:}  Mins / 60 = 1 and Mins \% 60 = 1
+\item \textbf{Class 3:} Mins / 60 = 1 and Mins \% 60  $>$  1
+\item \textbf{Class 4:} Mins / 60 $>$ 1 and Mins \% 60 = 0
+\item \textbf{Class 5:} Mins / 60 $>$ 1 and Mins \% 60 = 1
+\item \textbf{Class 6:} Mins / 60 $>$ 1 and Mins \% 60 $>$ 1
+\item \textbf{Class 7:} Mins / 60 = 0 and Mins \% 60 = 0
+\item \textbf{Class 8:} Mins / 60 = 0 and Mins \% 60 = 1
+\item \textbf{Class 9:} Mins / 60 = 0 and Mins \% 60 $>$ 1
+\end{itemize}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/bbt/bbtmatrix.png}
+\end{center}
+\caption{Proving the test cases produce Strong Normal ECT}
+\label{fig:bbt_matrix}
+\end{figure}
+In the Figure 1, The boxes colored in green represent all the valid output results and red boxes represent the invalid results which cannot be tested since the method did not specify how the negative integers should be treated. The Class 1,Class 2....Class 9 represents the partitions that we derived from how to convert the integers into readable string.
+\newpage
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/bbt/bbt_ect.png}
+\end{center}
+\caption{Test results using Strong Normal ECT}
+\label{fig:bbt_ect}
+\end{figure}
+
+\newpage
+\subsection{Testing Code}
+\begin{lstlisting}
+package eecs4313a2b;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import net.sf.borg.common.DateUtil;
+
+public class EECS4313A2AllBlackBoxTests {
+
+	@Test
+	public void testMinuteString() {
+
+		// Hour
+		// Class 1: Mins/60 = 1 and Mins\%60 = 0 - Testing 1 hour [Range: [1]]
+		assertEquals("1 Hour", DateUtil.minuteString(60));
+		// Class 2: Mins/60 = 1 and Mins\%60 = 1 -Testing 1 hour with 1 minute [Range:[1] hour and [1] minute]
+		assertEquals("1 Hour 1 Minute", DateUtil.minuteString(61));
+		// Class 3: Mins/60 = 1 and Mins\%60 > 1 -Testing 1 hour with some minutes [Range:[1] hour and (1,59] minutes]
+		assertEquals("1 Hour 15 Minutes", DateUtil.minuteString(75));
+		// -------------------------------------------------------
+		// Hours
+		// Class 4: Mins/60 > 1 and Mins\%60 = 0 -Testing hours more than one [Range:(1, infinity) hours]
+		assertEquals("3 Hours", DateUtil.minuteString(180));
+		// Class 5: Mins/60 > 1 and Mins\%60 = 1 -Testing hours more than 1 hour with some minutes [Range:(1,infinity) hours and [1] minute]
+		assertEquals("2 Hours 1 Minute", DateUtil.minuteString(121));
+		// Class 6: Mins/60 > 1 and Mins\%60 > 1 -Testing hours more than 1 hour with some minutes [Range:(1,infinity) hours and (1,59] minutes]
+		assertEquals("2 Hours 25 Minutes", DateUtil.minuteString(145));
+		// --------------------------------------------------------
+		// Minutes
+		// Class 7: Mins/60 = 0 and Mins\%60 = 0 -Testing 0 minutes [Range:[0] minute]
+		assertEquals("0 Minutes", DateUtil.minuteString(0));
+		// Class 8: Mins/60 = 0 and Mins\%60 = 1 -Testing 1 minute [Range:[1] minute]
+		assertEquals("1 Minute", DateUtil.minuteString(1));
+		// Class 9: Mins/60 = 0 and Mins\%60 > 1 - Testing minutes that are less than 1 hour [Range: (1,59] minutes]
+		assertEquals("50 Minutes", DateUtil.minuteString(50));
+	}
+}
+
+
+
+\end{lstlisting}
+
 \end{itemize}
 
 \newpage
@@ -532,7 +664,7 @@ coverage. The marker will not read your code in order to see what you tested. Yo
 describe it.
 \item The statement coverage measurements for your final submission. Include the screenshots of
 the test running results and the screenshots of the coverage measurement. If your coverage is
-not 100%, include a discussion on why that is.
+not 100\%, include a discussion on why that is.
 \item The Control Flow Graph you created. Indicate the segments clearly (you will probably need
 to include the code for this).
 \item The path coverage discussion described in section 2 above.
