@@ -164,15 +164,22 @@ Red coloured boxes in Figure 3 are representing impossible cases since negative 
 \newpage
 \newpage
 
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/ect/cfg.png}
+\end{center}
+\caption{Control Flow Graph for the minuteString function}
+\label{fig:wbt_ect_cfg}
+\end{figure}
 
-%%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
+%%%%Bug Report%%%%%%%%%%%%%%%%%%%
 
-\section{Reporting Bugs or Proposing Enhancements}
 
-\subsection{First Bug Report}
+
+\subsection{Bug Report}
 
 \begin{itemize}
-\item \textbf{Bug Report Title}: minuteString Method does not output the correct result for negative integers
+\item \textbf{Bug Report Title}: DateUtil.minuteString Method does not output the correct result for negative integers
 \item \textbf{Reported by}: Kirusanth Thiruchelvam
 \item \textbf{Date reported}: March 3, 2018
 \item \textbf{Program (or component) name}: net.sf.borg.common.DateUtil.minuteString()
@@ -192,7 +199,7 @@ Red coloured boxes in Figure 3 are representing impossible cases since negative 
 \item \textbf{Report type}: Coding Error
 \item \textbf{Reproducibility}: 100\%
 \item \textbf{Severity}: Low
-\item \textbf{Problem summary}: When inputing a negative integer as an argument for the minuteString method in Data Util. It produces the number in negative which is not correct since the reminder of the negative integer cannot be ne neagitive.
+\item \textbf{Problem summary}: When inputing a negative integer as an argument for the minuteString method in DataUtil class. It produces the number in negative which is not correct since the reminder of the negative integer cannot be ne negaitive.
 \item \textbf{Problem description}:\newline
 \underline{Steps to Reproduce}
 \begin{enumerate}
@@ -205,13 +212,6 @@ Red coloured boxes in Figure 3 are representing impossible cases since negative 
 \item Real Results: The actual result produce the bug since it shows -10 as the outputs.
 \item \textbf{New or old bug}: New
 \end{itemize}
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.99\textwidth]{images/wbt/ect/cfg.png}
-\end{center}
-\caption{Control Flow Graph for the minuteString function}
-\label{fig:wbt_ect_cfg}
-\end{figure}
 
 
 
