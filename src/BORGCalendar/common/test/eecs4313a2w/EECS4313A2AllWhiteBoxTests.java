@@ -279,7 +279,7 @@ public class EECS4313A2AllWhiteBoxTests implements SocketHandler {
 	 * ADDITIONAL TESTCASES TO HIT MORE COVERAGE
 	 */
     //hits line 44/45 increases coverage to 88.5%
-    @Test(expected = Exception.class)
+    @Test
     public void throwExceptionTest() {
     String msg = null;
     SocketServer ss;
@@ -287,29 +287,14 @@ public class EECS4313A2AllWhiteBoxTests implements SocketHandler {
         try {
             ss = new SocketServer(2920, null);
             response = SocketClient.sendMsg("localhost", 2920, msg);
-            assertTrue("Testing if a localhost on port port_max sends a message", response.equals(msg));
+            assertEquals("Testing if a localhost on port port_max sends a message", response,msg);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
     
-    //hits line 48,49 increases coverage to 96.7%
-    @Test
-    public void enterExceptionTest() {
-    String msg = "me";
-    SocketServer ss;
-    String response;
-        try {
-            ss = new SocketServer(2928, this);
-            ss.stop(new IOException());
-            response = SocketClient.sendMsg("localhost", 2928, msg);
-            assertTrue("Testing if a localhost on port port_max sends a message", response.equals(msg));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+
     
     @Test
     public void testIsAfter() {
