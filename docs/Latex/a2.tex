@@ -349,7 +349,7 @@ public class EECS4313A2AllBlackBoxTests implements SocketHandler {
 \item \textbf{Configuration(s)}:\\
 \underline{System Info}
 \begin{itemize}
-\item{Operating System: Windows 10 Home 64-bit (10.0, Build 16299) (16299.rs3\_release.170928-1534)}
+\item{Operating System: Windows 10 Home 64-bit (10.0, Build 16299)\\(16299.rs3\_release.170928-1534)}
 \item {Language: English (Regional Setting: English)}
 \item {System Manufacturer: Dell Inc.}
 \item {System Model: Inspiron 7559}
@@ -447,78 +447,64 @@ Applying boundary value junit testing to the sendMsg method in SocketClient reve
 \item \textbf{Method}: \emph{minuteString(int mins)}
 \item \textbf{Method Description}:
 This method generate a human reable string for a particular numbe of minutes.It returns the string interms of hours or minutes or both hours and mintues.
-\item \textbf{mins} - The argument is an integer
-\item \textbf{Justification}: Equivalence class testing is suitable for this method since argument of this method is an integer which is an independent variable and the entire range of input can be partitioned while assuring disjointness and non-redundancy between each partition set. We have chosen these partition integer range based on when we use minute, minutes, hour, and hours.In order to partition the integer argument into hours and minutes,we divide the Minutes by 60 to get the range of hours and  the remainder ( minutes \% 60) to get the range of the minutes.The paritions for this method are:
- \begin{itemize}
-\item \textbf{ Mins / 60 = 1 and Mins \% 60 = 0 :} To test 1 hour.
- \begin{itemize}
- \item Range of hours: [1]
- \item Range of minutes: [0]
+\begin{itemize}
+\item \textbf{mins} - An integer
 \end{itemize}
-\item \textbf{ Mins / 60 = 1 and Mins \% 60 = 1 :} To test the 1 hour with 1 minute.
- \begin{itemize}
- \item Range of hours: (1,$+\infty$)
- \item Range of minutes: [1]
-\end{itemize}
-\item \textbf{ Mins / 60 = 1 and Mins \% 60  $>$  1 :} To test 1 hour with minutes more than 1 minute. 
- \begin{itemize}
- \item  Range of hours: [1]
-\item  Range of Minutes : (1, 59]
+\item \textbf{Justification}: Equivalence class testing is suitable for this method since the argument of this method is an integer which is an independent variable and the input range can be partitioned while assuring disjointness and non-redundancy between each partition set. We have chosen these partition integer range based on when we use minute, minutes, hour, and hours. In order to partition the integer argument into hours and minutes, we divide the Minutes by 60 to get the range of hours and the remainder (minutes \% 60) to get the range of the minutes. \\ \\ The method did not specifity how negative minutes should be treated, so we omit the negative integers as an argument for this method. For example, -75 can be converted as -1 hour and 15 minutes or 45 minutes or any other way. Therefore, this case is tested in the whitebox testing after analyzing structure of the method.
+
+
 \newpage
+\begin{table}[!htb]
+\caption{Input ECT}
+\label{input-ectl}
+\begin{tabular}{ll}
+M1: & \{mins $|$ mins \% 60 = 0\}                                    \\
+M2: & \{mins $|$ mins \% 60 = 1\}                                    \\
+M3: & \{mins $|$ mins \% 60 $>$  1\}                         \\
+H1: & \{mins $|$ mins / 60 $\geq$ 1 AND mins / 60 $<$ 2\} \\
+H2: & \{mins $|$ mins / 60 $\geq$ 2\}                         \\
+H3: & \{mins $|$ mins / 60 $\geq$ 0 AND mins / 60\}                                   \\
+\end{tabular}
+\end{table}
+
+\begin{table}[!htb]
+\caption{Output ECT}
+\label{output-ectl}
+\begin{tabular}{ll}
+O1: &  H1, M1 = 1 hour                                    \\
+O2: &  H1, M2 = 1 hour 1 minute                                    \\
+O3: &  H1, M3 = 1 hour \emph{y} minutes                        \\
+O4: &  H2, M1 = \emph{x} hours\\
+O5: &  H2, M2 = \emph{x} hours 1 minute                     \\
+O6: &  H2, M3 = \emph{x} hours \emph{y} minutes          \\                        
+O7: &  H3, M1 = 0 minutes\\
+O8: &  H3, M2 = 1 minute                      \\
+O9: &  H3, M3 = \emph{y} minutes          \\                   
+\end{tabular}
+    \begin{itemize}
+      \small
+      \item \emph{x} and \emph{y} are integer variables
+    \end{itemize}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\caption{ECT-Matrix}
+\label{ect-matrix}
+\begin{tabular}{|l|l|l|l|}
+\hline
+M1 & O1 & O4 & O7 \\ \hline
+M2 & O2 & O5 & O8 \\ \hline
+M3 & O3 & O6 & O9 \\ \hline
+     & H1 & H2 & H3 \\ \hline
+\end{tabular}
+\end{table}
+
+\item \textbf{Evaluation} :   The tests are shown below suitable for strong normal equivalence class testing technique since it covers the all the range of outputs for valid inputs and invalid inputs (negative integers) are not tested due to lack of specfication information regarding these values. 
 \end{itemize}
-\item \textbf{ Mins / 60 $>$ 1 and Mins \% 60 = 0 :} To test the hours more than 1 hour.
- \begin{itemize}
- \item Range of hours: (1,$+\infty$)
- \item Range of minutes: [0]
-\end{itemize}
-\item \textbf{ Mins / 60 $>$ 1 and Mins \% 60 = 1 :} To test hours more than 1 hour with 1 minute. 
- \begin{itemize}
- \item Range of hours: (1,$+\infty$)
-\item Range of Minutes :[1]
-\end{itemize}
-\item \textbf{ Mins / 60 $>$ 1 and Mins \% 60 $>$ 1 :} To test the hours more than 1 hour with minutes more than 1 minute. 
- \begin{itemize}
- \item Range of hours:  (1,$+\infty$) 
-\item Range of Minutes : (1, 59]
-\end{itemize}
-\item \textbf{ Mins / 60 = 0 and Mins \% 60 = 0 :} To test 0 minutes.
- \begin{itemize}
- \item Range of hours: [0]
- \item Range of minutes: [0]
-\end{itemize}
-\item \textbf{ Mins / 60 = 0 and Mins \% 60 = 1 :} To test 1 minute.
- \begin{itemize}
- \item Range of hours: [0]
- \item Range of minutes: [1]
-\end{itemize}
-\item \textbf{ Mins / 60 = 0 and Mins \% 60 $>$ 1 :} To test minutes more than 1 minute and less than 60 minutes or 1 hour.
- \begin{itemize}
- \item Range of hours: [0]
- \item Range of minutes: (1,59]
-\end{itemize}
-\end{itemize}
-The method did not specifity how negative minutes should be treated, so we omit  the negative integers as an argument for this method.For example, -75 can be converted as -1 hour and 15 minutes or 45 minutes or any other way. Therefore, this case is tested in the whitebox testing after analyzing structure of the method.
-\item \textbf{Evaluation :}  The tests are shown below suitable for strong normal equivalence class testing technique since it covers the all the range of outputs for valid inputs and invalid inputs (negative integers) are not tested due to lack of specfication information regarding these values. 
-\newpage
- \begin{itemize}
-\item \textbf{Class 1:} Mins / 60 = 1 and Mins \% 60 = 0 
-\item \textbf{Class 2:}  Mins / 60 = 1 and Mins \% 60 = 1
-\item \textbf{Class 3:} Mins / 60 = 1 and Mins \% 60  $>$  1
-\item \textbf{Class 4:} Mins / 60 $>$ 1 and Mins \% 60 = 0
-\item \textbf{Class 5:} Mins / 60 $>$ 1 and Mins \% 60 = 1
-\item \textbf{Class 6:} Mins / 60 $>$ 1 and Mins \% 60 $>$ 1
-\item \textbf{Class 7:} Mins / 60 = 0 and Mins \% 60 = 0
-\item \textbf{Class 8:} Mins / 60 = 0 and Mins \% 60 = 1
-\item \textbf{Class 9:} Mins / 60 = 0 and Mins \% 60 $>$ 1
-\end{itemize}
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.99\textwidth]{images/bbt/bbtmatrix.png}
-\end{center}
-\caption{Proving the test cases produce Strong Normal ECT}
-\label{fig:bbt_matrix}
-\end{figure}
-In the Figure 1, The boxes colored in green represent all the valid output results and red boxes represent the invalid results which cannot be tested since the method did not specify how the negative integers should be treated. The Class 1,Class 2....Class 9 represents the partitions that we derived from how to convert the integers into readable string.
+
+
+
 \newpage
 \begin{figure}[!htb]
 \begin{center}
@@ -573,8 +559,6 @@ public class EECS4313A2AllBlackBoxTests {
 
 
 \end{lstlisting}
-
-\end{itemize}
 
 \newpage
 \subsection{Decision Table Testing}
