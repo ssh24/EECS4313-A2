@@ -84,164 +84,203 @@ import org.junit.Test;
 
 public class EECS4313A2AllWhiteBoxTests implements SocketHandler {
 
-    /**
-     * process a socket message
-     */
-    @Override
-    public synchronized String processMessage(String msg) {
-        return msg;
-    }
+	/**
+	 * process a socket message
+	 */
+	@Override
+	public synchronized String processMessage(String msg) {
+		return msg;
+	}
 
-    @Test
-    public void test_sendMsg() {
-        /** Method used: Boundary Value Testing **/
-        String validHost = "localhost";
+	@Test
+	public void test_sendMsg_WeakNormal() {
+		/** Method used: Boundary Value Testing **/
+		String validHost = "localhost";
 
-        int port_norm = 2929; // x_norm
-        int port_min = 0; // x_min
-        int port_min_plus = 1; // x_min+
-        int port_max = 65535; // x_max
-        int port_max_minus = 65534; // x_max-
+		int port_norm = 2929; // x_norm
+		int port_min = 0; // x_min
+		int port_min_plus = 1; // x_min+
+		int port_max = 65535; // x_max
+		int port_max_minus = 65534; // x_max-
 
-        // robustness
-        String invalidHost = "asdfasdf";
-        int port_min_minus = -1; // x_min-
-        int port_max_plus = 65536; // x_max_+
+		String response = "";
+		// port_norm
+		String msg = "Port 2929";
+		SocketServer ss = new SocketServer(port_norm, this);
+		try {
+			response = SocketClient.sendMsg(validHost, port_norm, msg);
+			assertEquals("Testing if a localhost on port_norm sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        String response = "";
-        // port_norm
-        String msg = "Port 2929";
-        SocketServer ss = new SocketServer(port_norm, this);
-        try {
-            response = SocketClient.sendMsg(validHost, port_norm, msg);
-            assertTrue("Testing if a localhost on port_norm sends a message", response.equals(msg));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        /* Unknown host exception extends IOException */
-        try {
-            response = SocketClient.sendMsg(invalidHost, port_norm, msg);
-            assertTrue("Testing if an invalid host on port_norm sends a message", response.equals(msg));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		// port_min
+		/*
+		 * Throws connection problem. port 0 isn't available on my computer Connect
+		 * Exception extends Socket Exception which extends IOException
+		 */
+		msg = "Port 0";
+		try {
+			ss = new SocketServer(port_min, this);
+			response = SocketClient.sendMsg(validHost, port_min, msg);
+			assertEquals("Testing if a localhost on port_min sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// port_min+
+		msg = "Port 1";
+		try {
+			ss = new SocketServer(port_min_plus, this);
+			response = SocketClient.sendMsg(validHost, port_min_plus, msg);
+			assertEquals("Testing if a localhost on port port_min+ sends a message", response, msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-        // port_min
-        /*
-         * Throws connection problem. port 0 isn't available on my computer Connect
-         * Exception extends Socket Exception which extends IOException
-         */
-        msg = "Port 0";
-        try {
-            ss = new SocketServer(port_min, this);
-            response = SocketClient.sendMsg(validHost, port_min, msg);
-            assertTrue("Testing if a localhost on port_min sends a message", response.equals(msg));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // port_min+
-        msg = "Port 1";
-        try {
-            ss = new SocketServer(port_min_plus, this);
-            response = SocketClient.sendMsg(validHost, port_min_plus, msg);
-            assertTrue("Testing if a localhost on port port_min+ sends a message", response.equals(msg));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+		// port_max
+		msg = "Port 65535";
+		try {
+			ss = new SocketServer(port_max, this);
+			response = SocketClient.sendMsg(validHost, port_max, msg);
+			assertEquals("Testing if a localhost on port port_max sends a message", response, msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-        // port_max
-        msg = "Port 65535";
-        try {
-            ss = new SocketServer(port_max, this);
-            response = SocketClient.sendMsg(validHost, port_max, msg);
-            assertTrue("Testing if a localhost on port port_max sends a message", response.equals(msg));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        // port_max
-        msg = " ";
-        try {
-            ss = new SocketServer(port_max, this);
-            response = SocketClient.sendMsg(validHost, 17501, msg);
-            assertTrue("Testing if a localhost on port port_max sends a message", response.equals(msg));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+		// port_max-
+		msg = "Port 65534";
+		try {
+			ss = new SocketServer(port_max_minus, this);
+			response = SocketClient.sendMsg(validHost, port_max_minus, msg);
+			assertEquals("Testing if a localhost on port_max- sends a message", response, msg);
 
-        // port_max-
-        msg = "Port 65534";
-        try {
-            ss = new SocketServer(port_max_minus, this);
-            response = SocketClient.sendMsg(validHost, port_max_minus, msg);
-            assertTrue("Testing if a localhost on port_max- sends a message", response.equals(msg));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+	@Test
+	public void test_sendMsg_WeakRobust() {
+		/** Method used: Boundary Value Testing **/
+		String validHost = "localhost";
 
-        // port_min-
-        /*
-         * Illegal argument Exception
-         */
+		int port_norm = 2929; // x_norm
+		int port_min = 0; // x_min
+		int port_min_plus = 1; // x_min+
+		int port_max = 65535; // x_max
+		int port_max_minus = 65534; // x_max-
 
-        msg = "Port -1";
-        try {
-            ss = new SocketServer(port_min_minus, this);
-            response = SocketClient.sendMsg(validHost, port_min_minus, msg);
-            assertTrue("Testing if a localhost on port_min- sends a message", response.equals(msg));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException iae) {
-            fail("Ports < 0 should be handled by the method");
-        }
+		// robustness
+		String invalidHost = "asdfasdf";
+		int port_min_minus = -1; // x_min-
+		int port_max_plus = 65536; // x_max_+
 
-        // port_max+
-        /*
-         * Illegal argument Exception
-         */
-        msg = "Port 65536";
-        try {
-            ss = new SocketServer(port_max_plus, this);
-            response = SocketClient.sendMsg(validHost, port_max_plus, msg);
-            assertTrue("Testing if a localhost on port_max+ sends a message", response.equals(msg));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException iae) {
-            fail("Ports > 65535 should be handled by the method");
-        }
-        
-        // null??
-        msg = "Port 17500";
-        try {
-            ss = new SocketServer(port_max, this);
-            response = SocketClient.sendMsg(validHost, 17500, msg);
-            assertTrue("Testing if a localhost on port port_max sends a message", response.equals(msg));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        // null??
-        msg = null;
-        try {
-            ss = new SocketServer(2090, this);
-            response = SocketClient.sendMsg(validHost, 17502, msg);
-            assertTrue("Testing if a localhost on port port_max sends a message", response.equals(msg));
-            
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+		String response = "";
+		// port_norm
+		String msg = "Port 2929";
+		SocketServer ss = new SocketServer(port_norm, this);
+		try {
+			response = SocketClient.sendMsg(validHost, port_norm, msg);
+			assertEquals("Testing if a localhost on port_norm sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		/* Unknown host exception extends IOException */
+		try {
+			response = SocketClient.sendMsg(invalidHost, port_norm, msg);
+			assertEquals("Testing if an invalid host on port_norm sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    }
-    //hits line 47
+		// port_min
+		/*
+		 * Throws connection problem. port 0 isn't available on my computer Connect
+		 * Exception extends Socket Exception which extends IOException
+		 */
+		msg = "Port 0";
+		try {
+			ss = new SocketServer(port_min, this);
+			response = SocketClient.sendMsg(validHost, port_min, msg);
+			assertEquals("Testing if a localhost on port_min sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// port_min+
+		msg = "Port 1";
+		try {
+			ss = new SocketServer(port_min_plus, this);
+			response = SocketClient.sendMsg(validHost, port_min_plus, msg);
+			assertEquals("Testing if a localhost on port port_min+ sends a message", response, msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// port_max
+		msg = "Port 65535";
+		try {
+			ss = new SocketServer(port_max, this);
+			response = SocketClient.sendMsg(validHost, port_max, msg);
+			assertEquals("Testing if a localhost on port port_max sends a message", response, msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// port_max-
+		msg = "Port 65534";
+		try {
+			ss = new SocketServer(port_max_minus, this);
+			response = SocketClient.sendMsg(validHost, port_max_minus, msg);
+			assertEquals("Testing if a localhost on port_max- sends a message", response, msg);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// port_min-
+		/*
+		 * Illegal argument Exception
+		 */
+
+		msg = "Port -1";
+		try {
+			ss = new SocketServer(port_min_minus, this);
+			response = SocketClient.sendMsg(validHost, port_min_minus, msg);
+			assertEquals("Testing if a localhost on port_min- sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException iae) {
+			fail("Ports < 0 should be handled by the method");
+		}
+
+		// port_max+
+		/*
+		 * Illegal argument Exception
+		 */
+		msg = "Port 65536";
+		try {
+			ss = new SocketServer(port_max_plus, this);
+			response = SocketClient.sendMsg(validHost, port_max_plus, msg);
+			assertEquals("Testing if a localhost on port_max+ sends a message", response, msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException iae) {
+			fail("Ports > 65535 should be handled by the method");
+		}
+	}
+    
+	/**
+	 * ADDITIONAL TESTCASES TO HIT MORE COVERAGE
+	 */
+    //hits line 44/45 increases coverage to 88.5%
     @Test(expected = Exception.class)
-    public void exceptionTest() {
+    public void throwExceptionTest() {
     String msg = null;
     SocketServer ss;
     String response;
@@ -249,13 +288,29 @@ public class EECS4313A2AllWhiteBoxTests implements SocketHandler {
             ss = new SocketServer(2920, null);
             response = SocketClient.sendMsg("localhost", 2920, msg);
             assertTrue("Testing if a localhost on port port_max sends a message", response.equals(msg));
-            
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-
+    
+    //hits line 48,49 increases coverage to 96.7%
+    @Test
+    public void enterExceptionTest() {
+    String msg = "me";
+    SocketServer ss;
+    String response;
+        try {
+            ss = new SocketServer(2928, this);
+            ss.stop(new IOException());
+            response = SocketClient.sendMsg("localhost", 2928, msg);
+            assertTrue("Testing if a localhost on port port_max sends a message", response.equals(msg));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
     @Test
     public void testIsAfter() {
         /** Method used: Decision Table Testing **/

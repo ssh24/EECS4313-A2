@@ -203,6 +203,7 @@ This covers the two invalid cases possible for the test based on the implementat
 \end{itemize}
 
 \newpage
+<<<<<<< HEAD
 \subsection{Decision Table Testing}
 
 \begin{itemize}
@@ -360,5 +361,61 @@ The following is the code snippet for the \emph{isAfter} function:
 		assertFalse("Date d1 is before d2", result);
 \end{code}
 
+<<<<<<< HEAD
 
+=======
+=======
+\subsection{Boundary Value Testing}
+\begin{itemize}
+\item \textbf{Technique}: \emph{Boundary Value Testing}
+\item \textbf{Class}: \emph{net.sf.borg.common.SocketClient.java}
+\item \textbf{Method}: \emph{sendMsg(String host, int port, String msg)}
+\item \textbf{Method Description}: This method sends a given message to a given host, port and returns the response from the socket.
+\begin{itemize}
+\item the first argument \emph{host} is the host that the socket client should be connected to.
+\item the second argument \emph{port} is the port on the host that the socket client should be connected to
+\item the third argument \emph{msg} is the message that should be sent over to the host and port given.
+\end{itemize}
+
+\item \textbf{Statement Coverage Using Black-Box Methods}: \\ 82\%  [refer to Figures 1 \& 2]
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure1.png}
+\end{center}
+\caption{Statement Coverage View for the sendMsg function before additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure2.png}
+\end{center}
+\caption{Statement Coverage Metrics for the sendMsg function before additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+
+\item \textbf{Final Statement Coverage Using Additional Testcases}: \\ 96.7\% [refer to Figures 3 \& 4]
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure3.png}
+\end{center}
+\caption{Statement Coverage View for the sendMsg function after additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/wbt/bvt/figure4.png}
+\end{center}
+\caption{Statement Coverage Metrics for the sendMsg function after additional testcases}
+\label{fig:wbt_bvt_code}
+\end{figure}
+
+\item \textbf{The Additional Statements}: The additional tests added to increase line coverage needed to cause exceptions or pass values to the method which were not quantifiable. Thus, our original boundary value testing testcases needed more methods to increase coverage. The two added functions are further described below:
+\begin{itemize}
+\item One testcase considered if the message string sent was null. There is a null checking branch path that gets executed due to this testcase.
+\item The other testcase triggers an exception which causes the sendMsg method to enter the exception related branches. This test case triggers multiple exception conditionals due to closing the socket before the \emph{sendMsg} function is executed.
+\end{itemize}
+\item \textbf{Why not 100\%?}: In the \emph{sendMsg} function there is a statement which 
+\end{itemize}
+>>>>>>> 7a3b6fe... pls check that coverage is now 96.7%
+>>>>>>> f9f2a58... pls check that coverage is now 96.7%
 \end{document}

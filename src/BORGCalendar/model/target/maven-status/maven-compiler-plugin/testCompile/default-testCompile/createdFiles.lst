@@ -1,0 +1,5 @@
+net/sf/borg/test/UndoTest.class
+net/sf/borg/test/EncryptionTest.class
+net/sf/borg/test/CalDavTest.class
+net/sf/borg/test/LinkTest.class
+net/sf/borg/test/CheckListTest.class
